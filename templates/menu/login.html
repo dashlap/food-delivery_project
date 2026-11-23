@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Вход — Тарелка{% endblock %}
+{% block content %}
+<section class="auth-section container">
+  <div class="auth-aside"><span class="eyebrow">Рады видеть снова</span><h1>Ваши любимые<br><em>вкусы рядом.</em></h1><p>Войдите, чтобы следить за заказами и планировать вкусный день.</p></div>
+  <div class="form-card"><span class="eyebrow">Личный кабинет</span><h2>Войти</h2>
+    <form method="post" class="site-form">{% csrf_token %}
+      {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="button button-dark button-wide" type="submit">Войти <span>↗</span></button>
+    </form>
+    <p class="form-footnote">Впервые у нас? <a href="{% url 'register' %}">Создать аккаунт</a></p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Меню — Тарелка{% endblock %}
+{% block content %}
+<section class="page-intro container">
+  <span class="eyebrow">Приготовлено сегодня</span><h1>Меню <em>с настроением</em></h1>
+  <p>Выбирайте любимое — мы уже разогрели духовку.</p>
+</section>
+<section class="container catalog-section">
+  <div class="filter-row">
+    <a class="filter-chip{% if not active_category %} is-active{% endif %}" href="{% url 'catalog' %}">Всё меню</a>
+    {% for category in categories %}<a class="filter-chip{% if active_category == category.slug %} is-active{% endif %}" href="{% url 'catalog' %}?category={{ category.slug }}">{{ category.name }}</a>{% endfor %}
+  </div>
+  <div class="product-grid">
+    {% for product in products %}{% include "menu/partials/product_card.html" with product=product %}{% empty %}
+      <div class="empty-state">В этой категории пока нет блюд. Выберите другую категорию.</div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

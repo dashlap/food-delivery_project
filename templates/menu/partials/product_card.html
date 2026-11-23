@@ -1,0 +1,12 @@
+<article class="product-card">
+  <a class="product-image" href="{{ product.get_absolute_url }}"{% if product.image_url %} style="background-image:url('{{ product.image_url }}')"{% endif %}>
+    {% if product.is_popular %}<span class="product-badge">любимое</span>{% endif %}
+    {% if not product.image_url %}<span class="image-placeholder">т.</span>{% endif %}
+  </a>
+  <div class="product-info">
+    <div><span class="product-category">{{ product.category.name }} · {{ product.weight }}</span><a href="{{ product.get_absolute_url }}"><h3>{{ product.name }}</h3></a></div>
+    <div class="product-buy"><b>{{ product.price }} ₽</b>
+      <form method="post" action="{% url 'add_to_cart' product.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="add-button" type="submit" aria-label="Добавить {{ product.name }} в корзину">+</button></form>
+    </div>
+  </div>
+</article>

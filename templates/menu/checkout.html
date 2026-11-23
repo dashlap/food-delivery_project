@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Оформление заказа — Тарелка{% endblock %}
+{% block content %}
+<section class="container checkout-page">
+  <div class="page-intro compact-intro"><span class="eyebrow">Ещё один шаг</span><h1>Оформление <em>заказа</em></h1></div>
+  <div class="checkout-grid">
+    <div class="form-card"><h2>Куда доставить?</h2>
+      <form method="post" class="site-form">{% csrf_token %}
+        {% for field in form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+        <button class="button button-dark button-wide" type="submit">Подтвердить заказ <span>↗</span></button>
+      </form>
+    </div>
+    <aside class="summary-card"><span class="eyebrow">В вашей корзине</span><h2>Ваш заказ</h2>
+      {% for line in lines %}<div class="summary-line"><span>{{ line.product.name }} <small>× {{ line.quantity }}</small></span><b>{{ line.product.price|floatformat:0 }} ₽</b><form method="post" action="{% url 'remove_from_cart' line.product.pk %}">{% csrf_token %}<button class="remove-button" type="submit" aria-label="Убрать {{ line.product.name }}">×</button></form></div>{% endfor %}
+      <div class="summary-total"><span>Итого</span><b>{{ total }} ₽</b></div><p class="summary-hint">Оплата при получении заказа</p>
+    </aside>
+  </div>
+</section>
+{% endblock %}

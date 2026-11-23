@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — Тарелка{% endblock %}
+{% block content %}
+<section class="container detail-wrap">
+  <a class="back-link" href="{% url 'catalog' %}">← Вернуться в меню</a>
+  <div class="detail-grid">
+    <div class="detail-image"{% if product.image_url %} style="background-image:url('{{ product.image_url }}')"{% endif %}>{% if not product.image_url %}<span class="image-placeholder">т.</span>{% endif %}</div>
+    <div class="detail-copy">
+      <span class="eyebrow">{{ product.category.name }} · {{ product.weight }}</span>
+      <h1>{{ product.name }}</h1><p class="detail-description">{{ product.description }}</p>
+      <div class="detail-note"><span>✳</span> Готовим после оформления заказа из свежих продуктов.</div>
+      <div class="detail-order"><b>{{ product.price }} ₽</b><form method="post" action="{% url 'add_to_cart' product.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="button button-dark" type="submit">Добавить в корзину <span>+</span></button></form></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Профиль — Тарелка{% endblock %}
+{% block content %}
+<section class="container profile-page">
+  <div class="page-intro compact-intro"><span class="eyebrow">Личный кабинет</span><h1>Привет, <em>{{ user.first_name|default:user.username }}!</em></h1><p>{{ user.email }}</p></div>
+  <div class="section-heading"><div><span class="eyebrow">Всё под контролем</span><h2>Мои заказы</h2></div><a class="arrow-link" href="{% url 'catalog' %}">Заказать ещё <span>↗</span></a></div>
+  <div class="order-list">
+    {% for order in orders %}
+      <article class="order-card">
+        <div class="order-card-top"><div><span class="product-category">Заказ №{{ order.pk }} · {{ order.created_at|date:"d.m.Y, H:i" }}</span><h3>{{ order.get_status_display }}</h3></div><b>{{ order.total }} ₽</b></div>
+        <div class="order-items">{% for item in order.items.all %}<span>{{ item.product.name }} × {{ item.quantity }}</span>{% endfor %}</div>
+        <div class="order-address">Доставка: {{ order.address }} · {{ order.phone }}</div>
+      </article>
+    {% empty %}<div class="empty-state">Заказов пока нет — самое время выбрать что-нибудь вкусное.<br><a class="arrow-link" href="{% url 'catalog' %}">Открыть меню ↗</a></div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

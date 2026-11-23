@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — Тарелка{% endblock %}
+{% block content %}
+<section class="auth-section container">
+  <div class="auth-aside"><span class="eyebrow">Добро пожаловать к столу</span><h1>Вкусное уже<br><em>совсем близко.</em></h1><p>Создайте аккаунт, чтобы оформить первый заказ и следить за доставкой.</p></div>
+  <div class="form-card"><span class="eyebrow">Это займёт минуту</span><h2>Регистрация</h2>
+    <form method="post" class="site-form">{% csrf_token %}
+      {% for field in form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="help-text">{{ field.help_text|safe }}</div>{% endif %}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+      <button class="button button-dark button-wide" type="submit">Создать аккаунт <span>↗</span></button>
+    </form>
+    <p class="form-footnote">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+  </div>
+</section>
+{% endblock %}

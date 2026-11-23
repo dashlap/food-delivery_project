@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Управление заказами — Тарелка{% endblock %}
+{% block content %}
+<section class="container dashboard-page">
+  <div class="page-intro compact-intro"><span class="eyebrow">Для команды</span><h1>Управление <em>заказами</em></h1><p>Обновляйте статусы, чтобы клиенты знали, где их заказ.</p></div>
+  <div class="dashboard-links"><a class="button button-outline" href="/admin/">Открыть админку Django ↗</a><a class="button button-outline" href="{% url 'catalog' %}">Посмотреть меню ↗</a></div>
+  <div class="dashboard-orders">
+    {% for order in orders %}
+      <article class="dashboard-order">
+        <div class="dashboard-order-head"><div><span class="product-category">Заказ №{{ order.pk }} · {{ order.created_at|date:"d.m.Y, H:i" }}</span><h2>{{ order.user.get_full_name|default:order.user.username }}</h2></div><span class="status-pill status-{{ order.status }}">{{ order.get_status_display }}</span></div>
+        <div class="dashboard-details"><span>{{ order.phone }}</span><span>{{ order.address }}</span><b>{{ order.total }} ₽</b></div>
+        <div class="order-items">{% for item in order.items.all %}<span>{{ item.product.name }} × {{ item.quantity }}</span>{% endfor %}</div>
+        {% if order.comment %}<p class="order-address">Комментарий: {{ order.comment }}</p>{% endif %}
+        <form class="status-form" method="post" action="{% url 'update_order_status' order.pk %}">{% csrf_token %}{{ status_form.status }}<button class="button button-dark" type="submit">Сохранить статус</button></form>
+      </article>
+    {% empty %}<div class="empty-state">Заказов пока нет.</div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

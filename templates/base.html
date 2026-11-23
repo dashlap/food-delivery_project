@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <title>{% block title %}Тарелка — доставка еды{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="{% url 'home' %}"><span class="brand-mark">т.</span> тарелка<span class="brand-dot">.</span></a>
+      <nav class="main-nav" aria-label="Главная навигация">
+        <a href="{% url 'catalog' %}">Меню</a>
+        <a href="{% url 'home' %}#about">О нас</a>
+        {% if user.is_staff %}<a href="{% url 'dashboard' %}">Заказы</a>{% endif %}
+      </nav>
+      <div class="nav-actions">
+        <a class="cart-link" href="{% url 'checkout' %}" aria-label="Корзина">Корзина <span class="cart-count">{{ cart_count }}</span></a>
+        {% if user.is_authenticated %}
+          <a class="account-link" href="{% url 'profile' %}">{{ user.first_name|default:user.username }}</a>
+          <form class="inline-form" action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="text-button" type="submit">Выйти</button></form>
+        {% else %}
+          <a class="account-link" href="{% url 'login' %}">Войти</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+  {% if messages %}
+    <div class="container message-stack">
+      {% for message in messages %}<div class="message message-{{ message.tags }}">{{ message }}</div>{% endfor %}
+    </div>
+  {% endif %}
+  <main>{% block content %}{% endblock %}</main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand brand-light" href="{% url 'home' %}"><span class="brand-mark">т.</span> тарелка<span class="brand-dot">.</span></a>
+      <span>Готовим с заботой. Доставляем с удовольствием.</span>
+      <span>Ежедневно · 10:00–23:00</span>
+    </div>
+  </footer>
+</body>
+</html>

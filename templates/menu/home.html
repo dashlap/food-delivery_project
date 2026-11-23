@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Тарелка — вкусная доставка на каждый день{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> Еда, которая делает день лучше</span>
+      <h1>Хороший день<br>начинается <em>со вкуса.</em></h1>
+      <p>Готовим из свежих продуктов и привозим любимые блюда прямо к вашей двери.</p>
+      <div class="hero-actions"><a class="button button-dark" href="{% url 'catalog' %}">Выбрать блюдо <span>↗</span></a><span class="delivery-note"><b>35–50 мин</b><br>среднее время доставки</span></div>
+      <div class="hero-meta"><span>★ 4,9 <small>рейтинг гостей</small></span><i></i><span>Свежие продукты<small>каждый день</small></span></div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-image" role="img" aria-label="Свежая паста с томатами"></div>
+      <div class="hero-sticker"><span>Сделано<br>с любовью</span><b>✳</b></div>
+      <div class="hero-caption"><span>№ 01 / меню</span><span>Вкусно — это просто</span></div>
+    </div>
+  </div>
+</section>
+<section class="section container" id="popular">
+  <div class="section-heading"><div><span class="eyebrow">То, что любят</span><h2>Хиты нашего меню</h2></div><a class="arrow-link" href="{% url 'catalog' %}">Всё меню <span>↗</span></a></div>
+  <div class="product-grid">
+    {% for product in products %}
+      {% include "menu/partials/product_card.html" with product=product %}
+    {% empty %}
+      <div class="empty-state">Скоро здесь появятся наши любимые блюда. Загляните в меню!</div>
+    {% endfor %}
+  </div>
+</section>
+<section class="promise" id="about">
+  <div class="container promise-grid">
+    <div><span class="eyebrow">Наша философия</span><h2>Просто хорошая<br><em>еда. Каждый день.</em></h2></div>
+    <p>Мы верим, что вкусная еда не должна быть сложной. Выбираем сезонные продукты, готовим небольшими партиями и бережно привозим каждый заказ.</p>
+    <div class="promise-stat"><b>01</b><span>Честный состав<br>без лишнего</span></div>
+    <div class="promise-stat"><b>02</b><span>Готовим после<br>вашего заказа</span></div>
+    <div class="promise-stat"><b>03</b><span>Доставка по<br>всему городу</span></div>
+  </div>
+</section>
+{% endblock %}
